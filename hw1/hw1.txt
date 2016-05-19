@@ -1,0 +1,14 @@
+Problem 1
+	a) Looking up information relevant to course as long as that information is solely concepts, syntax, or high level ideas, asking the course staff for help
+	b) Raise the concern within 2 weeks of receiving the grade, If an assignment, assign your grader an issue on GitHub and if it can't be resolved then go see the TA
+	c) Each student has three late days, but only one can be applied to each assignment
+	d) Complete the online submission form, start the next HW sooner
+	e) None
+
+Problem 2
+	a) Git bash, Terminal
+	b) 
+		1) git add hw1q2b.cpp
+		2) git log
+	c) It will commit all staged files
+	

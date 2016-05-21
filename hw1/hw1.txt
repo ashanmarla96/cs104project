@@ -6,9 +6,9 @@ Problem 1
 	e) None
 
 Problem 2
-	a) Git bash, Terminal
+	a) Cloning into a folder that itself is a git repo
 	b) 
 		1) git add hw1q2b.cpp
-		2) git log
-	c) It will commit all staged files
+		2) git log -p -3
+	c) git clone git@github.com:usc-csci104-summer2016/hw-amarla.git
 	

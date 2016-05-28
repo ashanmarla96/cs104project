@@ -67,7 +67,7 @@ void genHelper(vector<vector<string> >& words, ofstream& ofile, int currentOptio
 {
   string temp;
   //base case
-  if(currentOption == words.size()){
+  if((unsigned) currentOption == words.size()){
   	ofile << sentence << "." << endl;
   	numSentences += 1;
   	return;
@@ -75,14 +75,14 @@ void genHelper(vector<vector<string> >& words, ofstream& ofile, int currentOptio
 
   else{
   	//iterate through each part of speech
-  	for(int j=0; j < words[currentOption].size(); j++){
+  	for(unsigned int j=0; j < words[currentOption].size(); j++){
   		//skip over un-needed  words
   		if(words[currentOption][0].empty()){
   			temp = sentence;
   		}
   		else{
   			temp = sentence + " " + words[currentOption][j];
-  			if(((currentOption==0)||(currentOption==3)) && (j == (words[currentOption].size())-1)){
+  			if(((currentOption==0)||(currentOption==3)) && (j == (words[currentOption].size())-(unsigned)1)){
 				genHelper(words, ofile, currentOption+1, sentence, numSentences);
 			}
   		}

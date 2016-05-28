@@ -1,0 +1,9 @@
+Problem 1)
+	a. README.md is Unmodified, nothing to commit and branch is up to date
+	b. README.md is Modified and fun_problem.txt is Untracked, both files not staged for commit and branch is up to date
+	c. README.md and fun_problem.txt are both staged to be committed and branch is up to date
+	d. README.md and fun_problem.txt are both Modified but not staged for commit, branch is ahead of master by 1 commit
+	e. README.md is staged to be committed and fun_problem.txt is Unmodified, branch is ahead of master by 1 commit, fun_problem.txt is empty now since git checkout copied the repository version of the file (which was blank) over the local version
+	f. README.md is both Modified, but not staged to be committed, and staged to be committed. The version of README that's staged to be committed doesn't have the phrase "Fancy git move" since it is the version that was added to be staged in the previous operation, and the version of README that is not committed but Modified represents this updated README.
+
+

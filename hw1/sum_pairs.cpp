@@ -18,11 +18,6 @@ int main(int argc, char* argv[]){
 	ofstream outfile(argv[2]);
 	int count = 0;
 	int num = 0;
-	
-	if(infile.fail()){
-		cerr << "Error opening file" << endl;
-		return 1;
-	}
 
 	infile >> count;
 	int* numList = new int[count];
@@ -33,30 +28,20 @@ int main(int argc, char* argv[]){
 	}
 
 	infile.close();
-	int newcap = ceil(count/2);
+	int newcap = ceil((double)count/2);
 	int* sumList = new int[newcap];
-
-	/*for(int i=0; i<count; i++){
-		for (int j = count-1; j >= 0; j--)
-		{
-			sumList[i] = numList[i] + numList[j];
-			if(i+1 == j || i == j){
-				break;
-			}
-		}
-	}*/
 
 	int start = 0;
 	int end = count-1;
-
-	while(start<count && end >= 0){
-		sumList[start] = numList[start] + numList[end];
+	
+	for (int i = 0; i < newcap; ++i){
+		sumList[i] = numList[start] + numList[end];
 		start += 1;
 		end -= 1;
-		if(start+1 == end || start == end){
-			break;
-		}
+		//cout << sumList[i] << endl;
 	}
+
+		
 
 	if (outfile.fail()){
 		cerr << "Error opening output file";
@@ -66,12 +51,14 @@ int main(int argc, char* argv[]){
 			outfile << 0;
 		}
 		else{
+			//iterate through sum list and output to file
 			for(int i=0; i < newcap; i++){
-				outfile << sumList[i];
+				outfile << sumList[i] << endl;;
 			}
 		}
 	}
 
+	//de-allocating memory 
 	delete [] numList;
 	delete [] sumList;
 

@@ -1,5 +1,5 @@
 # CS 104 Student Repository
 
-- **Name**: Tommy Trojan
+- **Name**: Ashan Marla
 - **USC ID**: 1234567890
-- **Email**: ttrojan@usc.edu
+- **Email**: amarla@usc.edu

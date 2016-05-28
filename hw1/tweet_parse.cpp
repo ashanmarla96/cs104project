@@ -5,11 +5,8 @@
 #include <cstring>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 using namespace std;
-
-/*HAVENT ACCOUNTED FOR DUPLICATES
-	OR MULTIPLE ELEMENTS YET!!!!
-	*/
 
 int main(int argc, char* argv []){
 	if(argc < 2){
@@ -28,26 +25,34 @@ int main(int argc, char* argv []){
 
 	string textLine;
 	while(getline(infile, textLine)){
-		//below code for users
+		
 		stringstream ss(textLine);
-		string temp;
-		getline(ss, temp, '@');
-		getline(ss, temp, ' ');
-		if(!ss.fail()){
-			stringstream ss2(temp);
-			string user;
-			while(ss2 >> user){
-				users.push_back(user);
+		string temp, skip;
+
+		while(getline(getline(ss, skip, '@'), temp, ' ')){
+			if(!ss.fail()){
+				stringstream ss2(temp);
+				string user;
+				while(ss2 >> user){
+					users.push_back(user);
+					ss2.clear();
+				}
+
 			}
 		}
-		//below code for hashtags
-		getline(ss, temp, '#');
-		getline(ss, temp, ' ');
-		if(!ss.fail()){
-			stringstream ss3(temp);
-			string hastag;
-			while(ss3 >> hastag){
-				hashtags.push_back(hastag);
+
+		stringstream ss3(textLine);
+		string temp2, skip2;
+
+		while(getline(getline(ss3, skip2, '#'), temp2, ' ')){
+			if(!ss3.fail()){
+				stringstream ss4(temp2);
+				string hastag;
+				while(ss4 >> hastag){
+					hashtags.push_back(hastag);
+					ss4.clear();
+				}
+
 			}
 		}
 		
@@ -56,13 +61,24 @@ int main(int argc, char* argv []){
 		}
 	}
 
-	cout << numLines << endl;
-	for (int i = 0; i < users.size(); ++i)
-	{
+
+	//below code is to remove duplicates from users and hashtags
+	sort(users.begin(), users.end());
+	users.erase(unique(users.begin(), users.end()), users.end());
+	
+	sort(hashtags.begin(), hashtags.end());
+	hashtags.erase(unique(hashtags.begin(), hashtags.end()), hashtags.end());
+	
+	//below is outputed twitter data
+	cout << "1. Number of tweets=" << numLines << endl;
+	
+	cout << "2. Unique users" << endl;
+	for (unsigned int i = 0; i < users.size(); ++i){
 		cout << users[i] << endl;
 	}
-	for (int i = 0; i < hashtags.size(); ++i)
-	{
+	
+	cout << "3. Unique hashtags" << endl;
+	for (unsigned int i = 0; i < hashtags.size(); ++i){
 		cout << hashtags[i] << endl;
 	}
 

@@ -1,6 +1,7 @@
 #include "llistint.h"
 #include <cstdlib>
 #include <stdexcept>
+using namespace std;
 
 LListInt::LListInt()
 {
@@ -29,8 +30,39 @@ int LListInt::size() const
  */
 void LListInt::insert(int loc, const int& val)
 {
+  if(loc < 0 || loc > size_){
+    throw invalid_argument("bad location");
+  }
 
+  Item *temp = getNodeAt(loc);
+  Item* newNode = new Item;
+  newNode->val = val;
+  newNode->next = NULL; newNode->prev = NULL;
 
+  if(head_ == NULL){
+    head_ = newNode;
+  }
+
+  if(loc == size_){
+    newNode->prev = tail_;
+    tail_->next = newNode;
+    tail_ = newNode;
+  }
+
+  else if(loc == 0 && head_ != NULL){
+    newNode->next = head_;
+    head_->prev = newNode;
+    head_ = newNode;
+  }
+
+  else{
+    newNode->prev = temp->prev;
+    temp->prev->next = newNode;
+
+    newNode->next = temp;
+    temp->prev = newNode;
+  }
+  
 
 }
 
@@ -39,13 +71,46 @@ void LListInt::insert(int loc, const int& val)
  */
 void LListInt::remove(int loc)
 {
+  if(loc < 0 || loc >= size_){
+    throw invalid_argument("bad location");
+  }
 
+  if(head_ == NULL){
+    throw invalid_argument("empty list");
+  }
 
+  Item* temp = getNodeAt(loc);
+  
+  if(loc == size_-1){
+    temp->prev->next = NULL;
+    tail_ = temp->prev;
+    temp->prev = NULL;
+    delete temp;
+  }
+
+  else if(loc == 0 && head_ != NULL){
+    temp->next->prev = NULL;
+    head_ = temp->next;
+    temp->next = NULL;
+    delete temp;
+  }
+
+  else{
+    temp->prev->next = temp->next;
+    temp->next->prev = temp->prev;
+
+    temp->prev = NULL;
+    temp->next = NULL;
+    delete temp;
+  }
 
 }
 
 void LListInt::set(int loc, const int& val)
 {
+  if(loc < 0 || loc >= size_){
+    throw invalid_argument("bad location");
+  }
   Item *temp = getNodeAt(loc);
   temp->val = val;
 }
@@ -53,7 +118,7 @@ void LListInt::set(int loc, const int& val)
 int& LListInt::get(int loc)
 {
   if(loc < 0 || loc >= size_){
-    throw std::invalid_argument("bad location");
+    throw invalid_argument("bad location");
   }
   Item *temp = getNodeAt(loc);
   return temp->val;
@@ -62,7 +127,7 @@ int& LListInt::get(int loc)
 int const & LListInt::get(int loc) const
 {
   if(loc < 0 || loc >= size_){
-    throw std::invalid_argument("bad location");
+    throw invalid_argument("bad location");
   }
   Item *temp = getNodeAt(loc);
   return temp->val;

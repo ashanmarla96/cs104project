@@ -65,7 +65,9 @@ class AListInt
   void resize(); 
    
   /* Add necessary data members here */
-  
+  int* data_;
+  unsigned int size_;
+  unsigned int cap_;
   
 };
 

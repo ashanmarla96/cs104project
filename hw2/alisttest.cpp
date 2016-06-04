@@ -49,7 +49,10 @@ int main() {
   list->insert(1,8);
   list->insert(1,7);
   list->set(1, 9);
-  list->remove(1);
+  //list->remove(1);
+  list->insert(1,4);
+  list->insert(-1,6);
+  list->insert(3, 323);
   cout << endl;
     for(int i=0; i<list->size(); i++){
       cout << list->get(i) << endl;

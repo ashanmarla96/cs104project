@@ -10,17 +10,20 @@ struct Item{
 	Item* next;
 };
 
-void print(Item*& head){
-	//ofstream outfile(ofile);
+void print(Item*& head, char* filename){
+	int val;
+	ofstream outfile(filename);
 	//vector<int> nums;
-	if(head->next == NULL){
-		return;
-	}  
-	else{
-		cout << head->val << endl;
-		//nums.push_back(head->val);
-   		print(head->next);
-  	}
+
+
+	while(head != NULL){
+		val = head->val;
+		outfile << val << " ";
+		//cout << head->val << " ";
+		head = head->next;
+	}
+  	//cout << endl;
+  	outfile << endl;
 }
 
 void readLists(char* filename, Item*& headA, Item*& headB){
@@ -29,6 +32,7 @@ void readLists(char* filename, Item*& headA, Item*& headB){
 		cerr << "Error opening input file" << endl;
 		return;
 	}
+
 
 	string txtline;
 	int num;
@@ -49,6 +53,7 @@ void readLists(char* filename, Item*& headA, Item*& headB){
 			temp->next = newNode;
 			temp = temp->next;
 		}
+		//delete newNode;
 	}
 
 	string txtline2;
@@ -71,49 +76,91 @@ void readLists(char* filename, Item*& headA, Item*& headB){
 
 }
 
+void copy(Item* head, Item* copyto){
+	if(head == NULL){
+		return;
+	}
+	else{
+		Item* newNode = new Item;
+		newNode->val = head->val; newNode->next = NULL;
+		copyto->next = newNode;
+		copy(head->next, newNode);
+	}
+
+}
 
 
 void concatenatehelper(Item* headA, Item* headB, Item* headC){
 	//cout << "TEST0" << endl;
-	Item* newNode = new Item;
+	//Item* newNode = new Item;
 	if(headB == NULL){
-		headC->next = NULL;
 		return;
 	}
-	else if(headA == NULL){
-		//Item* newNode = new Item;
-		newNode->val = headB->val;
-		headC->val = newNode->val;
-		concatenatehelper(headA, headB->next, headC->next);
+	else if(headA != NULL){
+		Item* newNode = new Item;
+		newNode->val = headA->val; newNode->next = NULL;
+		headC->next = newNode;
+		concatenatehelper(headA->next, headB, newNode);
 	}
-	else{
-		//Item* newNode = new Item;
-		newNode->val = headA->val;
-		headC->val = newNode->val;
-		concatenatehelper(headA->next, headB, headC->next);
+	else /*if(headB != NULL)*/{
+		Item* newNode = new Item;
+		newNode->val = headB->val; newNode->next = NULL;
+		headC->next = newNode;
+		concatenatehelper(headA, headB->next, newNode);
 	}
+	
 }
 
 Item* concatenate(Item* headA, Item* headB){
 	Item* headC = new Item;
-	//headC->val = 0; headC->next = NULL;
-	concatenatehelper(headA, headB, headC);
+	
+
+	if(headA == NULL || headB == NULL){
+		if(headA == NULL){
+			headC->val = headB->val; headC->next = NULL;
+			copy(headB->next, headC);
+			return headC;
+		}
+		else if(headB == NULL){
+			headC->val = headA->val; headC->next = NULL;
+			copy(headA->next, headC);
+			return headC;
+		}
+		else if(headA == NULL && headB == NULL){
+			headC->val = 0; headC->next = NULL;
+			return headC;
+		}
+
+	}
+	
+	headC->val = headA->val; headC->next = NULL;
+	concatenatehelper(headA->next, headB, headC);
 	return headC;
 }
 
 void removehelper(Item*& head){
-	if(head->next == NULL){
+	Item* temp;
+	temp = head;
+	if(head == NULL){
 		return;
 	}
-	else{
-		if(head->val == head->next->val){
-			head->next = head->next->next;
-			removehelper(head);
+
+	if(temp->next->next == NULL){
+		if(temp->val == temp->next->val){
+			temp->next = NULL;
+			return;
 		}
-		else{
-			removehelper(head->next);
-		}
+		return;
 	}
+
+	if(temp->val == temp->next->val){
+		temp->next = temp->next->next;
+		removehelper(temp);
+	}
+	
+	removehelper(temp->next);
+	
+	
 }
 
 void removeDuplicates(Item*& head){
@@ -134,20 +181,21 @@ int main(int argc, char* argv[]){
   	Item* head3 = NULL;
 
   	readLists(argv[1], head1, head2);
-
-  	//vector<int> numlist;
+  	
+  	
   	removeDuplicates(head1);
   	head3 = concatenate(head1, head2);
-  	print(head3);
+  	print(head3, argv[2]);
 
-  	//ofstream outfile(argv[2]);
+  	
 
-  	Item* temp = head3;
-  	while(temp->next != NULL){
+  	/*Item* temp = head3;
+  	cout << head3->val << endl;
+  	while(temp != NULL){
   		cout << temp->val << " ";
   		temp = temp->next;
   	}
-  	cout << endl;
+  	cout << endl;*/
 
   	
 

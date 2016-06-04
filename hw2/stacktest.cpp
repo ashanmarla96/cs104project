@@ -17,6 +17,7 @@ int main() {
 		cout << "Success" << endl;
 	}
 	s->pop();
+	s->pop();
 	if(s->top() == 3){
 		cout << "Success" << endl;
 	}

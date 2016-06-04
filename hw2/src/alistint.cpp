@@ -87,7 +87,6 @@ int& AListInt::get(int position)
 {
 	if(position < 0 || position >= size_){
     cerr << "Out of bounds of list" << endl;
-    return;
   }
   return data_[position];
 }
@@ -96,7 +95,6 @@ int const & AListInt::get(int position) const
 {
 	if(position < 0 || position >= size_){
     cerr << "Out of bounds of list" << endl;
-    return;
   }
   return data_[position];
 }

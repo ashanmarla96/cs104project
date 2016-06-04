@@ -2,13 +2,19 @@ BIN_DIR = bin
 CXX = g++
 CXXFLAG = -g -Wall
 
-all: $(BIN_DIR)/llisttest $(BIN_DIR)/alisttest
+all: $(BIN_DIR)/llisttest $(BIN_DIR)/alisttest $(BIN_DIR)/stacktest $(BIN_DIR)/laundry $(BIN_DIR)/remdup
 
 LListTest: $(BIN_DIR)/llisttest
 
 AListTest: $(BIN_DIR)/alisttest
 
 StackTest: $(BIN_DIR)/stacktest
+
+Laundry: $(BIN_DIR)/laundry
+
+Remdup: $(BIN_DIR)/remdup
+
+
 
 $(BIN_DIR)/llisttest: $(BIN_DIR)/.dirstamp $(BIN_DIR)/llistint.o llisttest.cpp 
 	$(CXX) $(CXXFLAG) $(BIN_DIR)/llistint.o llisttest.cpp -o $(BIN_DIR)/llisttest
@@ -31,6 +37,8 @@ $(BIN_DIR)/alistint.o: $(BIN_DIR)/.dirstamp src/alistint.cpp lib/alistint.h
 $(BIN_DIR)/stackint.o: $(BIN_DIR)/.dirstamp src/stackint.cpp lib/stackint.h 
 	$(CXX) $(CXXFLAG) -c src/stackint.cpp -o $(BIN_DIR)/stackint.o
 
+$(BIN_DIR)/remdup: $(BIN_DIR)/.dirstamp remdup.cpp
+	$(CXX) $(CXXFLAG) remdup.cpp -o $(BIN_DIR)/remdup
 
 $(BIN_DIR)/.dirstamp:
 	mkdir -p $(BIN_DIR)

@@ -1,4 +1,4 @@
-#include "llistint.h"
+#include "lib/llistint.h"
 #include <iostream>
 
 using namespace std;
@@ -37,6 +37,35 @@ int main() {
     cout << "FAIL: 3 is not at the 0th index of the list, " << list->get(0);
     cout << " is instead." << endl;
   }
+
+  list->insert(0,4);
+  if(list->get(0) == 4){
+    cout << "SUCCESS, " << list->size() << endl;
+  }
+  else{
+    cout << "FAIL, " << list->get(0) << endl;
+  }
+
+  list->insert(2,8);
+  list->insert(3,7);
+  list->set(2, 9);
+  
+  list->remove(4);
+  list->remove(3);
+  list->remove(2);
+  list->remove(0);
+  //list->remove(0);
+
+
+    if(list->size() != 0){
+      for(int i=0; i<list->size(); i++){
+        cout << list->get(i) << endl;
+      }
+    }
+    else{cout << "empty list" << endl;};
+  
+
+
 
   // Clean up memory.
   delete list;

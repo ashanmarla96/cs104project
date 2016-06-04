@@ -1,5 +1,6 @@
-#include "llistint.h"
+#include "../lib/llistint.h"
 #include <cstdlib>
+#include <iostream>
 #include <stdexcept>
 using namespace std;
 
@@ -31,39 +32,44 @@ int LListInt::size() const
 void LListInt::insert(int loc, const int& val)
 {
   if(loc < 0 || loc > size_){
-    throw invalid_argument("bad location");
+    cerr << "Out of bounds of list" << endl;
+    return;
   }
 
-  Item *temp = getNodeAt(loc);
+  
   Item* newNode = new Item;
   newNode->val = val;
   newNode->next = NULL; newNode->prev = NULL;
 
   if(head_ == NULL){
     head_ = newNode;
-  }
-
-  if(loc == size_){
-    newNode->prev = tail_;
-    tail_->next = newNode;
     tail_ = newNode;
+    size_ += 1;
   }
 
   else if(loc == 0 && head_ != NULL){
     newNode->next = head_;
     head_->prev = newNode;
     head_ = newNode;
+    size_ += 1;
+  }
+
+  else if(loc == size_){
+    newNode->prev = tail_;
+    tail_->next = newNode;
+    tail_ = newNode;
+    size_ += 1;
   }
 
   else{
+    Item *temp = getNodeAt(loc);
     newNode->prev = temp->prev;
     temp->prev->next = newNode;
 
     newNode->next = temp;
     temp->prev = newNode;
+    size_ += 1;
   }
-  
-
 }
 
 /**
@@ -72,36 +78,50 @@ void LListInt::insert(int loc, const int& val)
 void LListInt::remove(int loc)
 {
   if(loc < 0 || loc >= size_){
-    throw invalid_argument("bad location");
+    cerr << "Out of bounds of list" << endl;
+    return;
   }
 
   if(head_ == NULL){
-    throw invalid_argument("empty list");
+    cerr << "Cannot remove from empty list" << endl;
+    return;
   }
 
-  Item* temp = getNodeAt(loc);
+  Item* temp;
   
-  if(loc == size_-1){
+  if(loc == 0 && head_ != NULL){
+    if(head_->next != NULL){
+      temp = head_;
+      temp->next->prev = NULL;
+      head_ = temp->next;
+      temp->next = NULL;
+      delete temp;
+      size_ -= 1;
+    }
+    else{
+      head_ = NULL;
+      size_ -= 1;
+    }
+  }
+
+  else if(loc == size_-1){
+    temp = tail_;
     temp->prev->next = NULL;
     tail_ = temp->prev;
     temp->prev = NULL;
     delete temp;
+    size_ -= 1;
   }
-
-  else if(loc == 0 && head_ != NULL){
-    temp->next->prev = NULL;
-    head_ = temp->next;
-    temp->next = NULL;
-    delete temp;
-  }
-
+  
   else{
+    temp = getNodeAt(loc);
     temp->prev->next = temp->next;
     temp->next->prev = temp->prev;
 
     temp->prev = NULL;
     temp->next = NULL;
     delete temp;
+    size_ -= 1;
   }
 
 }
@@ -120,8 +140,19 @@ int& LListInt::get(int loc)
   if(loc < 0 || loc >= size_){
     throw invalid_argument("bad location");
   }
-  Item *temp = getNodeAt(loc);
-  return temp->val;
+
+  if(loc == 0){
+    return head_->val;
+  }
+
+  else if(loc == (size_ - 1)){
+    return tail_->val;
+  }
+
+  else{
+    Item *temp = getNodeAt(loc);
+    return temp->val;
+  }
 }
 
 int const & LListInt::get(int loc) const
@@ -129,8 +160,19 @@ int const & LListInt::get(int loc) const
   if(loc < 0 || loc >= size_){
     throw invalid_argument("bad location");
   }
-  Item *temp = getNodeAt(loc);
-  return temp->val;
+
+  if(loc == 0){
+    return head_->val;
+  }
+
+  else if(loc == (size_ - 1)){
+    return tail_->val;
+  }
+
+  else{
+    Item *temp = getNodeAt(loc);
+    return temp->val;
+  }
 }
 
 void LListInt::clear()

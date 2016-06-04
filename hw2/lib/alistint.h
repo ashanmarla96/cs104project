@@ -66,8 +66,8 @@ class AListInt
    
   /* Add necessary data members here */
   int* data_;
-  unsigned int size_;
-  unsigned int cap_;
+  int size_;
+  int cap_;
   
 };
 

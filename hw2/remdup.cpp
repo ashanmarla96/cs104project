@@ -1,4 +1,3 @@
-#include <vector>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -10,23 +9,6 @@ struct Item{
 	Item* next;
 };
 
-void append(Item*& head, int value){
-	Item* newNode = new Item;
-	newNode->val = value;
-	newNode->next = NULL;
-
-	if(head == NULL){
-		head = newNode;
-	}
-	else{
-		Item* temp = head;
-		while(temp->next){
-			temp = temp->next;
-		}
-		temp->next = newNode;
-	}
-}
-
 void readLists(char* filename, Item*& headA, Item*& headB){
 	ifstream infile(filename);
 	if(infile.fail()){
@@ -34,24 +16,83 @@ void readLists(char* filename, Item*& headA, Item*& headB){
 		return;
 	}
 
+	
+	
 	string txtline;
 	int num;
-	vector<int> nums;
-	while(infile >> num){
-		nums.push_back(num);
-		if(infile.get('/n')){
-			break;
+	getline(infile, txtline);
+	stringstream ss(txtline);
+	cout<<txtline<<endl;
+	Item* temp;
+	while(ss >> num){
+		Item* newNode = new Item;
+		newNode->val = num;
+		newNode->next = NULL;
+		if(headA == NULL){
+			headA = newNode;
+			temp = headA;
 		}
+		else{
+			temp->next = newNode;
+			temp = temp->next;
+			//temp = newNode;
+		}
+		
 	}
 	
-
-	for (int i = 0; i < nums.size(); ++i)
-	{
-		cout << nums[i] << endl;
-	}
-
-
+	/*Item* temp2 = headA;
+	while(temp2 != NULL){
+		cout << temp2->val << endl;
+		temp2 = temp2->next;
+	}*/
 }
+
+
+
+void concatenatehelper(Item* headA, Item* headB, Item* headC){
+	if(headA == NULL){
+		Item* newNode = new Item;
+		headC->next = newNode;
+		newNode = headB;
+		concatenatehelper(headA, headB->next, headC);
+	}
+	if(headB == NULL){
+		return;
+	}
+	else{
+		headC->next = headA;
+		concatenatehelper(headA->next, headB, headC);
+	}
+}
+
+Item* concatenate(Item* headA, Item* headB){
+	Item* headC = new Item;
+	concatenatehelper(headA, headB, headC);
+	return headC;
+}
+
+void removehelper(Item*& head){
+	if(head->next == NULL){
+		return;
+	}
+	else{
+		if(head->val == head->next->val){
+			head->next = head->next->next;
+			removehelper(head);
+		}
+		else{
+			removehelper(head->next);
+		}
+	}
+}
+
+void removeDuplicates(Item*& head){
+	removehelper(head);
+}
+
+
+
+
 
 int main(int argc, char* argv[]){
 	if(argc < 2){
@@ -60,6 +101,15 @@ int main(int argc, char* argv[]){
 
   	Item* head1 = NULL;
   	Item* head2 = NULL;
+  	Item* head3;
 
   	readLists(argv[1], head1, head2);
+
+  	removeDuplicates(head1);
+  	//head3 = concatenate(head1, head2);
+  	Item* temp2 = head1;
+	while(temp2 != NULL){
+		cout << temp2->val << endl;
+		temp2 = temp2->next;
+	}
 }

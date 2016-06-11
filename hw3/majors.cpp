@@ -26,6 +26,7 @@ int main(int argc, char* argv [])
 	}
 	
 	SetStr stud_set;
+	SetStr* maj_set = new SetStr();
 	map<string, SetStr> my_map;
 
 	string textLine;
@@ -40,7 +41,7 @@ int main(int argc, char* argv [])
   				student.erase(student.size()-1,1);
 			} 
   					
-			cout << student << endl;
+			//cout << student << endl;
 			stud_set.insert(student);
 			cout << stud_set.size() << endl;
 			while(getline(ss, major)){
@@ -51,11 +52,17 @@ int main(int argc, char* argv [])
      					if(major_[i] == ' ') major_.erase(i,1);
      					major_[i] = toupper(major_[i]);
 					}
-					//cout << student << endl;
-					//cout << "!" + major_ << endl;
+					for(int i=0; i<stud_set.size(); i++){
+						//cout << *testset.next() << endl;
+						my_map.insert(pair<string, SetStr>(*stud_set.next(), major_));
+					}
 				}
+				
 
 				
+				
+
+				//my_map.insert(pair<string, SetStr>(student, maj_set))
 			}
 		}
 	}

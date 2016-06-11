@@ -98,6 +98,10 @@ bool SetStr::exists(const string& val) const
 
 string const* SetStr::first()
 {
+	if(list_.empty()){
+		return NULL;
+	}
+
 	return &(list_.get(0));
 	index = 0;
 	index += 1;
@@ -109,9 +113,12 @@ string const* SetStr::next()
 		return NULL;
 	}
 	else{
-		return &(list_.get(index));
+		string* temp = &(list_.get(index));
 		index += 1;
+		return temp;
+		//return &(list_.get(index));
 	}
+	//index += 1;
 	
 }
 

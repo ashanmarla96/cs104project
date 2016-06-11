@@ -93,13 +93,14 @@ LListStr::LListStr(const LListStr& other)
   Item* iter;
   iter = other.head_;
 
-  if(iter != NULL){
-    while(iter->next != NULL){
-      this->push_back(iter->val);
-      iter = iter->next;
-    }
-  }
+  this->head_ = NULL;
+  this->tail_ = NULL;
+  this->size_ = 0;
 
+  while(iter != NULL){
+    this->push_back(iter->val);
+    iter = iter->next;
+  }
 }
 
 LListStr& LListStr::operator=(const LListStr& other)

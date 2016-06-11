@@ -9,6 +9,8 @@ LListStrTest: $(BIN_DIR)/lliststrtest
 
 SetTest: $(BIN_DIR)/settest
 
+Majors: $(BIN_DIR)/majors
+
 $(BIN_DIR)/lliststrtest: $(BIN_DIR)/.dirstamp $(BIN_DIR)/lliststr.o lliststrtest.cpp 
 	$(CXX) $(CXXFLAG) $(BIN_DIR)/lliststr.o lliststrtest.cpp -o $(BIN_DIR)/lliststrtest
 
@@ -21,6 +23,9 @@ $(BIN_DIR)/settest: $(BIN_DIR)/.dirstamp $(BIN_DIR)/lliststr.o $(BIN_DIR)/setstr
 
 $(BIN_DIR)/setstr.o: $(BIN_DIR)/.dirstamp src/setstr.cpp lib/setstr.h
 	$(CXX) $(CXXFLAG) -c src/setstr.cpp -o $(BIN_DIR)/setstr.o
+
+$(BIN_DIR)/majors: $(BIN_DIR)/.dirstamp $(BIN_DIR)/lliststr.o $(BIN_DIR)/setstr.o majors.cpp
+	$(CXX) $(CXXFLAG) $(BIN_DIR)/lliststr.o $(BIN_DIR)/setstr.o majors.cpp -o $(BIN_DIR)/majors
 
 $(BIN_DIR)/.dirstamp:
 	mkdir -p $(BIN_DIR)

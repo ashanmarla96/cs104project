@@ -60,20 +60,21 @@ int main() {
   list->push_back("t3");
   if(list->size() != 0){
       for(int i=0; i<list->size(); i++){
-        cout << list->get(i) << endl;
+        cout << (list->get(i)) << endl;
       }
       cout << endl;
   }
 
-  LListStr list2;
-  list2 = *list;
-  //LListStr list3(*list);
+  /*LListStr list2;
+  list2 = *list;*/
+  LListStr list2(*list);
   list->clear();
   list->push_back("s");
 
+
     if(list2.size() != 0){
       for(int i=0; i<list2.size(); i++){
-        cout << list2.get(i) << endl;
+        cout << (list2.get(i)) << endl;
       }
       cout << list2.size() << endl;
     }

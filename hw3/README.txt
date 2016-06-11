@@ -3,7 +3,7 @@ amarla@usc.edu
 
 CSCI 104 Homework 3 -
 
-Problem 1 - saved as p1_answers.pdf
+Problem 1 - saved as p1_answers1.jpg and p1_answers2.jpg
 
 Problem 2 - 
 Compile (case sensitive) using: make LListStrTest

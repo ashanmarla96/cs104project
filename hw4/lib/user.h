@@ -80,11 +80,13 @@ class User {
   std::vector<Tweet*> getFeed();
 
   /* You may add other member functions */
+  //User*& operator=(const User*& other);
  private:
   /* Add any other data members or helper functions here  */
   std::string name_;
-  User* follower_;
-  Tweet* tweet_;
+  std::set<User*> followers_;
+  std::list<Tweet*> tweets_;
+  std::set<User*> following_;
 
 
 };

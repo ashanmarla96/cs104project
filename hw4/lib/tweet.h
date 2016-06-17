@@ -69,6 +69,10 @@ class Tweet
   /* You may add other member functions */
  private:
   /* Add any other data members or helper functions here  */
+  std::string text_;
+  DateTime time_;
+  User* user_;
+  std::set<std::string> tags_;
 
 
 

@@ -6,7 +6,6 @@
 #include <vector>
 #include "user.h"
 #include "datetime.h"
-#include "tweet.h"
 
 class TwitEng
 {
@@ -44,7 +43,6 @@ class TwitEng
   /* You may add other member functions */
  private:
   /* Add any other data members or helper functions here  */
-  set<User*> user_;
 
 
 

@@ -15,7 +15,7 @@ struct DateTime
   /**
    * Alternative constructor 
    */
-  DateTime(int hh, int mm, int ss, int year, int month, int day);
+  DateTime(int hh, int mm, int ss, int year_, int month_, int day_);
 
   /**
    * Return true if the timestamp is less-than other's

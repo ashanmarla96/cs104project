@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <string>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <set>
 #include "../lib/tweet.h"
@@ -44,7 +45,24 @@ string const & Tweet::text() const
 
 set<string> Tweet::hashTags() const
 {
-	return tags_;
+	set<string> tags_;
+	string temp = text_;
+    
+    string tagline; 
+    stringstream ss(temp);
+
+    while(ss >> tagline){
+      if(tagline[0]=='#'){
+        tagline.erase(0, 1);
+        tags_.insert(tagline);
+      }
+      else{
+      	continue;
+      }
+    }
+
+
+    return tags_;
 }
 
 bool Tweet::operator<(const Tweet& other) const
@@ -53,7 +71,7 @@ bool Tweet::operator<(const Tweet& other) const
 	else {return false;}
 }
 
-friend std::ostream& Tweet::operator<<(std::ostream& os, const Tweet& t)
+std::ostream& operator<<(std::ostream& os, const Tweet& t)
 {
 	os << t.time_ << " ";
 	os << (t.user_)->name() << " ";

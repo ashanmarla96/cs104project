@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <cstdlib>
 #include "../lib/user.h"
 #include "../lib/tweet.h"
@@ -12,14 +13,35 @@ using namespace std;
 User::User(std::string name) : name_(name)
 {}
 
+User::User(const User*& other)
+{
+	this->name_ = other->name_;
+}
+
 User::~User()
 {
-	followers_.clear();
-	delete followers_;
-	tweets_.clear();
-	delete tweets_;
-	following_.clear();
-	delete following_;
+	set<User*>::iterator it;
+	for(it = followers_.begin(); it != followers_.end(); it++){
+		User* temp = *it;
+		followers_.erase(it);
+		delete temp;
+	}
+
+	set<User*>::iterator it2;
+	for(it2 = following_.begin(); it2 != following_.end(); it2++){
+		User* temp = *it2;
+		following_.erase(it2);
+		delete temp;
+	}
+
+
+	list<Tweet*>::iterator it3;
+	for(it3= tweets_.begin(); it3 != tweets_.end(); it3++){
+		Tweet* temp = *it3;
+		tweets_.erase(it3);
+		delete temp;
+	}
+
 }
 
 string User::name() const
@@ -37,38 +59,71 @@ set<User*> User::following() const
 	return following_;
 }
 
-list<Tweet*> tweets() const
+list<Tweet*> User::tweets() const
 {
 	return tweets_;
 }
 
 void User::addFollower(User* u)
 {
-	followers_.push_back(u);
+	followers_.insert(u);
 }
 
 void User::addFollowing(User* u)
 {
-	following_.push_back(u);
+	following_.insert(u);
 }
 
 void User::addTweet(Tweet* t)
 {
-	tweets_.push_back(u);
+	tweets_.push_back(t);
 }
 
-User*& operator=(const User*& other)
+User* User::operator=(const User*& other)
 {
-	if(this == &other) {return *this;}
-	if(this != NULL) {/*call the destructor*/}
+	if(this == other) {return this;}
+	if(this != NULL) {delete other;}
 	
-	this->name_ = other.name_;
+	this->name_ = other->name_;
 	
-	return *this
+	return this;
 }
 
-/*vector<Tweet*> User::getFeed()
+vector<Tweet*> User::getFeed()
 {
+  vector<Tweet*> totTweets;
 
+
+  int temp_count =  following().size(); 
+  set<User*>::iterator it;
+
+  if(!tweets_.empty()){
+
+     for(list<Tweet*>::iterator it3 = tweets_.begin(); it3 != tweets_.end(); ++it3){
+     	totTweets.push_back(*it3);
+   		} 
+  }
+
+  if(following().size() != 0){
+   for( it = following().begin(); it != following().end(); ++it){
+   					list<Tweet*> temp;
+        temp = (*it)->tweets();
+        for (list<Tweet*>::iterator it2 = temp.begin(); it2 != temp.end(); ++it2){
+            totTweets.push_back(*it2);
+        }
+
+        temp_count -= 1;
+        if(temp_count == 0){
+          break;
+        }
+    }
+  }
+
+  if (!totTweets.empty()){
+
+    	sort(totTweets.begin(), totTweets.end(), TweetComp());
+     
+  }
+  return totTweets; 
 }
-*/
+

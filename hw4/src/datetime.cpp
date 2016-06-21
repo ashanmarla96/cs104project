@@ -15,14 +15,14 @@ DateTime::DateTime()
 	day = 0;
 }
 
-DateTime::DateTime(int hh, int mm, int ss, int year, int month, int day)
+DateTime::DateTime(int hh, int mm, int ss, int year_, int month_, int day_)
 {
 	hour = hh;
 	min = mm;
 	sec = ss;
-	year = year;
-	month = month;
-	day = day;
+	year = year_;
+	month = month_;
+	day = day_;
 }
 
 bool DateTime::operator<(const DateTime& other) const
@@ -46,10 +46,12 @@ bool DateTime::operator<(const DateTime& other) const
 			}
 		}
 	}
-	else{return false;}
+	else{
+		return false;
+	}
 }
 
-friend std::ostream& DateTime::operator<<(std::ostream& os, const DateTime& other)
+std::ostream& operator<<(std::ostream& os, const DateTime& other)
 {
 	os << other.year << "-";
 	os << other.month << "-";
@@ -62,15 +64,15 @@ friend std::ostream& DateTime::operator<<(std::ostream& os, const DateTime& othe
 	return os;
 }
 
-friend std::istream& DateTime::operator>>(std::istream& is, DateTime& dt)
+std::istream& operator>>(std::istream& is, DateTime& dt)
 {
-	is << other.year << "-";
-	is << other.month << "-";
-	is << other.day << " ";
+	is >> dt.year;
+	is >> dt.month;
+	is >> dt.day;
 
-	is << other.hour << "::";
-	is << other.min << "::";
-	is << other.sec;
+	is >> dt.hour;
+	is >> dt.min;
+	is >> dt.sec;
 
 	//HAVENT CHECKED FOR ERROR CHECK (CHECK HEADER FILE FOR DETAILS)!!!!!!!
 	// ^^^^^^^^^^^^^

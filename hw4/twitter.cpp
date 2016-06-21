@@ -1,6 +1,10 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "lib/user.h"
+#include "lib/tweet.h"
+#include "lib/twiteng.h"
+#include "lib/datetime.h"
 
 using namespace std;
 
@@ -27,6 +31,22 @@ int main(int argc, char* argv[])
   cout << "  TWEET username tweet_text" << endl;
   cout << "  QUIT (and write feed files)        " << endl;
   cout << "=====================================" << endl;
+
+  string sstrategy;
+  int strategy;
+  vector<string> query;
+  string term;
+  cout << "Enter command:" << endl;
+  cin >> sstrategy;
+  /*if(sstrategy == "AND")
+    strategy = 0;
+  if(sstrategy == "OR")
+    strategy = 1;
+  while (cin >> term)
+    query.push_back(term);*/
+
+
+  //twit.search(query, strategy);
 
   return 0;
 }

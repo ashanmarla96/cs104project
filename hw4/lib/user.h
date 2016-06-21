@@ -5,6 +5,7 @@
 #include <set>
 #include <list>
 #include <vector>
+#include "tweet.h"
 
 /* Forward Declaration to avoid #include dependencies */
 class Tweet;
@@ -15,6 +16,8 @@ class User {
    * Constructor 
    */
   User(std::string name);
+
+  User(const User*& other);
 
   /**
    * Destructor
@@ -80,7 +83,8 @@ class User {
   std::vector<Tweet*> getFeed();
 
   /* You may add other member functions */
-  //User*& operator=(const User*& other);
+  User* operator=(const User*& other);
+  //void deleteUsers(const std::set<User*>& other);
  private:
   /* Add any other data members or helper functions here  */
   std::string name_;

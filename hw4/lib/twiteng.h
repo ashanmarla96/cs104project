@@ -4,7 +4,9 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <string>
 #include "user.h"
+#include "tweet.h"
 #include "datetime.h"
 
 class TwitEng
@@ -43,7 +45,12 @@ class TwitEng
   /* You may add other member functions */
  private:
   /* Add any other data members or helper functions here  */
+  //std::string hashtag_;
+  User* meuser;
+  //std::map<std::string, std::set<Tweet*> > tagmap;
+  std::vector<Tweet*> tweets_;
 
+  std::map<std::string, User*> allUsrs;
 
 
 };

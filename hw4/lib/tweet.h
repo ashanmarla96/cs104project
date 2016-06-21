@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include "user.h"
 #include "datetime.h"
 
 /* Forward declaration */
@@ -72,7 +73,7 @@ class Tweet
   std::string text_;
   DateTime time_;
   User* user_;
-  std::set<std::string> tags_;
+  
 
 
 

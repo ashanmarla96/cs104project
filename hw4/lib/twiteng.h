@@ -46,8 +46,8 @@ class TwitEng
  private:
   /* Add any other data members or helper functions here  */
   //std::string hashtag_;
-  User* meuser;
-  //std::map<std::string, std::set<Tweet*> > tagmap;
+  //User* meuser;
+  std::map<std::string, std::set<Tweet*> > tagmap;
   std::vector<Tweet*> tweets_;
 
   std::map<std::string, User*> allUsrs;

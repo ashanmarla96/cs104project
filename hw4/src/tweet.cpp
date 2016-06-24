@@ -54,6 +54,7 @@ set<string> Tweet::hashTags() const
     while(ss >> tagline){
       if(tagline[0]=='#'){
         tagline.erase(0, 1);
+        cout << tagline << endl;
         tags_.insert(tagline);
       }
       else{

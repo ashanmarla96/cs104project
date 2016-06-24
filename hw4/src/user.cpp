@@ -71,6 +71,7 @@ void User::addFollower(User* u)
 
 void User::addFollowing(User* u)
 {
+	// cout << "Inside User" << name_ << " following " << u->name_ << endl; 
 	following_.insert(u);
 }
 
@@ -94,7 +95,7 @@ vector<Tweet*> User::getFeed()
   vector<Tweet*> totTweets;
 
 
-  int temp_count =  following().size(); 
+  //int temp_count =  following().size(); 
   set<User*>::iterator it;
 
   if(!tweets_.empty()){
@@ -104,17 +105,13 @@ vector<Tweet*> User::getFeed()
    		} 
   }
 
-  if(following().size() != 0){
-   for( it = following().begin(); it != following().end(); ++it){
+  if(!following().empty()){
+   for( it = following_.begin(); it != following_.end(); ++it){
+   		//cout << this->name_ <<" following " << (*it)->name_ << endl;
    					list<Tweet*> temp;
         temp = (*it)->tweets();
         for (list<Tweet*>::iterator it2 = temp.begin(); it2 != temp.end(); ++it2){
             totTweets.push_back(*it2);
-        }
-
-        temp_count -= 1;
-        if(temp_count == 0){
-          break;
         }
     }
   }
@@ -123,6 +120,12 @@ vector<Tweet*> User::getFeed()
 
     	sort(totTweets.begin(), totTweets.end(), TweetComp());
      
+  }
+
+  cout << "Get feed" << endl;
+  for(unsigned int i = 0; i < totTweets.size(); i++)
+  {
+  	cout << *(totTweets[i]) << endl;
   }
   return totTweets; 
 }

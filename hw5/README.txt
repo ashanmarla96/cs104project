@@ -1,0 +1,1 @@
+only run qmake and then followed by make and then followed by ./hw5 <filename>

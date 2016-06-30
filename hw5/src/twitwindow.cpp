@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <stdio.h>
 #include <stdlib.h>
+#include <algorithm>
 #include <string>
 using namespace std;
 
@@ -35,9 +36,9 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	QHBoxLayout *buttonsrad = new QHBoxLayout();
 	QVBoxLayout *buttonsrad1 = new QVBoxLayout();
 	QVBoxLayout *buttonsrad2 = new QVBoxLayout();
-	QRadioButton *andbutt = new QRadioButton("AND");
+	andbutt = new QRadioButton("AND");
 
-	QRadioButton *orbutt = new QRadioButton("OR");
+	orbutt = new QRadioButton("OR");
 	buttonsrad1->addWidget(andbutt);
 	buttonsrad1->addWidget(orbutt);
 	QLabel *termlabel = new QLabel("Enter term(s):");
@@ -52,15 +53,15 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	buttonsrad->addLayout(buttonsrad1);
 	searchlay->addLayout(buttonsrad);
 
-	/*QPushButton *termsearch = new QPushButton("&Search");
-	searchlay->addWidget(termsearch);*/
+	QPushButton *termsearch = new QPushButton("&Search");
+	searchlay->addWidget(termsearch);
 
 	termdisp = new QListWidget();
 	termdisp->addItem(QString::fromStdString("No Matches"));
 	searchlay->addWidget(termdisp);
 
-	QObject::connect(andbutt, SIGNAL(pressed()), this, SLOT(searchand()));
-	QObject::connect(orbutt, SIGNAL(pressed()), this, SLOT(searchor()));
+	QObject::connect(termsearch, SIGNAL(pressed()), this, SLOT(search()));
+	//QObject::connect(orbutt, SIGNAL(pressed()), this, SLOT(searchor()));
 
 	QPushButton *otherButton = new QPushButton("&Done");
 	searchlay->addWidget(otherButton);
@@ -72,7 +73,7 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	//user select
 	QHBoxLayout *setUserLay = new QHBoxLayout();
 	QLabel *userSel = new QLabel("Select User:");
-	QComboBox *usrdropdwn = new QComboBox();
+	usrdropdwn = new QComboBox();
 	map<string, User*>::iterator userit;
 	for(userit = users_.begin(); userit != users_.end(); ++userit){
 		usrdropdwn->addItem(QString::fromStdString(userit->first));
@@ -104,7 +105,7 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 
 	QVBoxLayout *addfollow = new QVBoxLayout();
 	QLabel *addlable = new QLabel("Follow User:");
-	QLineEdit *addbox = new QLineEdit();
+	addbox = new QLineEdit();
 	QPushButton *addusr = new QPushButton("&Follow");
 	addfollow->addWidget(addlable);
 	addfollow->addWidget(addbox);
@@ -112,6 +113,7 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 
 	followingstuff->addLayout(currfollow);
 	followingstuff->addLayout(addfollow);
+	QObject::connect(addusr, SIGNAL(clicked()), this, SLOT(followuser()));
 	window->addLayout(followingstuff);
 
 	QLabel *instruct7 = new QLabel(" ");
@@ -256,67 +258,37 @@ void TwitWindow::refreshmen(QString qtemp)
 	}
 }
 
-void TwitWindow::searchand()
+void TwitWindow::search()
 {
 	termdisp->clear();
-
-	if(!(term->text()).toStdString().empty()){return;}
-	string line = (term->text()).toStdString();
-	string term_;
-	vector<string> query;
-	vector<Tweet*> result;
-
-	stringstream ss(line);
-	while(ss >> term_){
-	  query.push_back(term_);
+	if (term->text().isEmpty() || (!orbutt->isChecked() && !andbutt->isChecked())){
+		return;
 	}
 
-	result = twit->search(query, 0);
+	stringstream ss1(term->text().toStdString());
+  	string terma;
+ 	vector<string> terms_;
+ 	vector<Tweet*> result;
+ 	 while (ss1 >> terma){
+   		//terma = convToLower(terma);
+    	terms_.push_back(terma);
+  	}
+
+  	term->setText("");
+  	if(andbutt->isChecked()){
+  		result = twit->search(terms_, 0);
+  	}
+  	else if(orbutt->isChecked()){
+  		result = twit->search(terms_, 1);
+  	}
+	
 
 	if(!result.empty()){
-	  //cout << result.size() << " Matches:" << endl;
-		//string temptxt = string(itoa(result.size())) + " Matches";
-		//termdisp->addItem(QString::fromStdString(temptxt));
 		stringstream sstxt_;
 	  	for(unsigned int i =0; i< result.size(); i++){
 	    	//cout << *result[i] << endl;
-	    	sstxt_ << (*result[i]);
+	    	sstxt_ << (*result[i]) << endl;
 	    	termdisp->addItem(QString::fromStdString(sstxt_.str()));
-	  	}
-	}
-	else{
-	  //cout << "No Matches." << endl;
-		termdisp->addItem(QString::fromStdString("No Matches"));
-	}
-	
-}
-
-void TwitWindow::searchor()
-{
-	termdisp->clear();
-
-	if(!(term->text()).toStdString().empty()){return;}
-	string line = (term->text()).toStdString();
-	string term_;
-	vector<string> query;
-	vector<Tweet*> result;
-
-	stringstream ss(line);
-	while(ss >> term_){
-	  query.push_back(term_);
-	}
-
-	result = twit->search(query, 1);
-
-	if(!result.empty()){
-	  //cout << result.size() << " Matches:" << endl;
-		//string temptxt = string(itoa(result.size())) + " Matches";
-		//termdisp->addItem(QString::fromStdString(temptxt));
-		stringstream sstxt;
-	  	for(unsigned int i =0; i< result.size(); i++){
-	    	//cout << *result[i] << endl;
-	    	sstxt << (*result[i]);
-	    	termdisp->addItem(QString::fromStdString(sstxt.str()));
 	  	}
 	}
 	else{
@@ -337,33 +309,52 @@ void TwitWindow::tweetadd()
 		return;
 	}
 
-	string line = tweettext->text().toStdString();
-	stringstream ss5;
 
-	  string name;
+	stringstream ss2(tweettext->text().toStdString());
 
 	  time_t rawtime;
 	  struct tm * timeinfo;
 	  time (&rawtime);
 	  timeinfo = localtime(&rawtime);
 
-	  ss5 >> name; 
+	string name;
+	ss2 >> name;
 
-	  string line_;
-	  getline(ss5, line_);
 
-	  string text;
-	  size_t found = line_.find_first_not_of(" \t");
-	  line = line_.substr(found, line.size());
-	  text = line_;
-	  //cout << text << endl;
-
-	  
-	  DateTime* dt = new DateTime(timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec,timeinfo->tm_year + 1900, timeinfo->tm_mon,  timeinfo->tm_mday);
-	  twit->addTweet(name, *dt, text);
-
-	 //refreshmen(QString::fromStdString(name));
-	 //refreshmain(QString::fromStdString(name));
+	string twxt;
+	string txt = "";
+	while(ss2 >> twxt){
+		txt = txt + " " + twxt;
+	}
 
 	tweettext->setText("");
+
+	DateTime* dt = new DateTime(timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec,timeinfo->tm_year + 1900, timeinfo->tm_mon,  timeinfo->tm_mday);
+	twit->addTweet(name, *dt, txt);
+}
+
+void TwitWindow::followuser()
+{
+	if(addbox->text().isEmpty()){
+		return;
+	}
+
+	User* tempusr;
+
+	string usr_ = addbox->text().toStdString();
+	map<string, User*>::iterator useit = users_.find(usr_);
+	if(useit != users_.end()){
+		tempusr = useit->second;
+	}
+	else{
+		tempusr = new User(usr_);
+		users_.insert(make_pair(usr_, tempusr));
+	}
+
+	string currusr = usrdropdwn->currentText().toStdString();
+	map<string, User*>::iterator mapit = users_.find(currusr);
+	(mapit->second)->addFollowing(tempusr);
+	refreshfollowing(QString::fromStdString(currusr));
+	
+
 }

@@ -29,16 +29,22 @@ private slots:
 	void refreshfollowing(QString);
 	void refreshmain(QString);
 	void refreshmen(QString);
-	void searchand();
-	void searchor();
+	void search();
 	void tweetadd();
+	void followuser();
 
 private:
 	TwitEng* twit;
 	std::map<std::string, User*> users_;
 
+	QComboBox *usrdropdwn;
+
+	QLineEdit *addbox;
+
 	QWidget *searchWin;
 	QVBoxLayout *window;
+	QRadioButton *orbutt;
+	QRadioButton *andbutt;
 
 	QLineEdit *tweettext;
 

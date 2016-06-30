@@ -3,6 +3,7 @@
 #include <string>
 #include <string>
 #include <sstream>
+#include <locale>
 #include <vector>
 #include <set>
 #include "../lib/tweet.h"
@@ -53,11 +54,15 @@ set<string> Tweet::hashTags() const
 	string temp = text_;
     
     string tagline; 
+    locale loc;
     stringstream ss(temp);
 
     while(ss >> tagline){
       if(tagline[0]=='#'){
         tagline.erase(0, 1);
+        //for (string::size_type i=0; i<tagline.length(); ++i){
+    		//tagline = tolower(tagline,loc);
+        //}
         //cout << tagline << endl;
         tags_.insert(tagline);
       }

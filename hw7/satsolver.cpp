@@ -49,13 +49,14 @@ void parse(char* filename, vector<vector<int> >& clause, int& numVar)
 		part.clear();
 	}
 
-	for(unsigned int i=0; i<clause.size(); i++){
+	/*for(unsigned int i=0; i<clause.size(); i++){
 		for(unsigned int j =0; j<clause[i].size(); j++){
 			cout << clause[i][j] << " ";
 		}
 		cout << clause[i].size();
 		cout << endl;
-	}
+	}*/
+	map<int, int>::iterator it = 
 
 	
 }
@@ -70,17 +71,17 @@ void print();
 
 int main(int argc, char* argv[])
 {
-	/*if(argc < 3){
+	if(argc < 3){
 		cerr << "Provide an input and output file" << endl;
 		return 1;
-	}*/
+	}
 
 	RedBlackTree<int, int> vars;
 	vector<vector<int> > clauses;
 	map<int, int> vartemp;
 	int numVar;
 
-	parse(argv[1], clauses, numVar);
+	parse(argv[1], clauses, numVar, vartemp);
 	//solve();
 
 	return 1;

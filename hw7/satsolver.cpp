@@ -8,7 +8,7 @@
 #include "rbbst.h"
 using namespace std;
 
-void parse(char* filename, vector<vector<int> >& clause, int& numVar)
+void parse(char* filename, vector<vector<int> >& clause, int& numVar, map<int, int> vartemp)
 {
 	ifstream infile(filename);
 	if(infile.fail()){
@@ -56,7 +56,7 @@ void parse(char* filename, vector<vector<int> >& clause, int& numVar)
 		cout << clause[i].size();
 		cout << endl;
 	}*/
-	map<int, int>::iterator it = 
+	//map<int, int>::iterator it = 
 
 	
 }

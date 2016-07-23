@@ -6,7 +6,7 @@ using namespace std;
 template<class T, class Comparator>
 void merge(vector<T>& me, vector<T>& container, int start, int middle, int end, Comparator compare)
 {
-  int begin = start
+  int begin = start;
   int tempmid = middle+1;
   for (int j = start; j <= end; ++j){
     if (begin <= middle){

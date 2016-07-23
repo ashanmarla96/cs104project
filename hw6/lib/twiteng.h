@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 #include <stack>
+#include <fstream>
 #include <string>
 #include "user.h"
 #include "tweet.h"
@@ -53,7 +54,8 @@ class TwitEng
 
 
   void tarjanHelper(int u,std::vector< std::vector<int> > g,std::vector<int>& index, std::vector<int>& low_index, 
-  std::stack<int>& S, int& disc, std::vector<int>& in_stack, std::vector<User*>& userVec);
+  std::stack<int>& S, int& disc, std::vector<int>& in_stack, std::vector<User*>& userVec, 
+  std::ostream& ofile, int& count);
  private:
   /* Add any other data members or helper functions here  */
   //std::string hashtag_;

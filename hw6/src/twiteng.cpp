@@ -527,10 +527,14 @@ void TwitEng::tarjan()
 		in_stack.push_back(0);
 	}
 
+	string filename = "Connections";
+    ofstream ofile(filename.c_str());
+    int count = 1;
+
 	for(unsigned int i=0; i<userVec.size(); i++){
 		if(tempIndex[i] == -1)
 		{
-			tarjanHelper(i, doubhold, tempIndex, tempLow, S, disc, in_stack, userVec);
+			tarjanHelper(i, doubhold, tempIndex, tempLow, S, disc, in_stack, userVec, ofile, count);
 		} 
 	}
 
@@ -545,13 +549,13 @@ void TwitEng::tarjan()
 // C
 
 void TwitEng::tarjanHelper(int u,vector< vector<int> > g,vector<int>& index, vector<int>& low_index, 
-	stack<int>& S, int& disc, vector<int>& in_stack, vector<User*>& userVec){
+	stack<int>& S, int& disc, vector<int>& in_stack, vector<User*>& userVec, ostream& ofile, int& count)
+{
     
 	//cout << "Enter recur" << endl;
 
     index[u] = low_index[u] = ++disc;
-    string filename = "Connections";
-    ofstream ofile(filename.c_str());
+    
 
     //disc = 0;
 	in_stack[u] = 1;
@@ -559,7 +563,7 @@ void TwitEng::tarjanHelper(int u,vector< vector<int> > g,vector<int>& index, vec
 	for(unsigned int i = 0;i < g[u].size();i++){
 		int v = g[u][i]; 
 		if(index[v] == -1){
-			tarjanHelper(v,g,index,low_index, S, disc, in_stack, userVec);
+			tarjanHelper(v,g,index,low_index, S, disc, in_stack, userVec, ofile, count);
 			low_index[u] = min(low_index[v],low_index[u]);
 		}
 	                          		           
@@ -573,17 +577,19 @@ void TwitEng::tarjanHelper(int u,vector< vector<int> > g,vector<int>& index, vec
 	if(index[u] == low_index[u])              
 	{                 
 		//cout << "equal" << endl; 
-		int tup = 1;
-		ofile << "Component"  << " " << tup << endl;                     
+		//int tup = 1;
+		ofile << "Component"  << " " << count << endl;
+		cout << "Component" << " " << count << endl;                     
 		while(S.empty() == false )
 		{
 			int i_ = S.top();
-			// cout<<S.top()<<" ";
+			cout<<S.top()<<" ";
 			
-			ofile << userVec[i_]->name() << endl; 
+			ofile << userVec[i_]->name() << endl;
+			cout << userVec[i_]->name() << endl; 
 			in_stack[S.top()] = 0;	
 			S.pop();
-			tup += 1;
+			
 
 			if(i_ == u){
 				 
@@ -591,6 +597,8 @@ void TwitEng::tarjanHelper(int u,vector< vector<int> > g,vector<int>& index, vec
 			}
 		}
 		ofile << endl;
+		count += 1;
 
 	}
+	//ofile.close();
 }

@@ -16,7 +16,11 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	window = new QVBoxLayout();
 	
 
+	// cout << "before get users " << endl;
 	users_ = twit->getUsers();
+
+
+	// cout << "After get users " << endl;
 
 	
 	//search popup window
@@ -45,7 +49,7 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	
 	term = new QLineEdit();
 	//string text_ = term->text().toStdString();
-	//cout << text_;
+	// cout << text_;
 
 	buttonsrad2->addWidget(termlabel);
 	buttonsrad2->addWidget(term);
@@ -70,6 +74,10 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 
 
 
+	// cout << "before user select " << endl;
+
+
+
 	//user select
 	QHBoxLayout *setUserLay = new QHBoxLayout();
 	QLabel *userSel = new QLabel("Select User:");
@@ -84,6 +92,14 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 
 	QLabel *instruct6 = new QLabel(" ");
 	window->addWidget(instruct6);
+
+
+
+
+	// cout << "after user select " << endl;
+
+
+	// cout << "before following boxes " << endl;
 
 	//following boxes
 	QHBoxLayout *followingstuff = new QHBoxLayout();
@@ -120,6 +136,11 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	window->addWidget(instruct7);
 
 
+	// cout << "after following boxes " << endl;
+
+	// cout << "before add tweet" << endl;
+
+
 	//add tweet
 	QHBoxLayout *addTweet = new QHBoxLayout();
 	QLabel *addlabel = new QLabel("Add Tweet");
@@ -134,6 +155,13 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	QLabel *instruct8 = new QLabel(" ");
 	window->addWidget(instruct8);
 
+
+	// cout << "after add tweet" << endl;
+
+	// cout << "before feeds" << endl;
+
+	cout << "In FEED" << endl;
+
 	//feeds
 	QHBoxLayout *feeds = new QHBoxLayout();
 
@@ -143,34 +171,72 @@ TwitWindow::TwitWindow(TwitEng* parsedFile) : QWidget(NULL)
 	mainfeed->addWidget(mainlabel);
 	mainfeed->addWidget(maindisp);
 
+
+	// cout << "Layout fine" << endl;
+
 	User* firstUser_ = (users_.begin()->second);
+
+	// cout << "1" << endl;
 	vector<Tweet*> tempTweet = firstUser_->getFeed();
+	// cout << "2" << endl;
 	stringstream ss;
 	//vector<Tweet*>::iterator myit2;
+	// cout << "3" << endl;
 	for(unsigned int i=0; i<tempTweet.size(); ++i){
 		ss << (*tempTweet[i]);
 		maindisp->addItem(QString::fromStdString(ss.str()));
 	}
+
+	// cout << "4" << endl;
 	QObject::connect(usrdropdwn, SIGNAL(currentIndexChanged(QString)), this, SLOT(refreshmain(QString)));
 
+	// cout << "more layout" << endl;
 	QVBoxLayout *menfeed = new QVBoxLayout();
 	QLabel *menlabel = new QLabel("Mention Feed:");
 	mendisp = new QListWidget();
 	menfeed->addWidget(menlabel);
 	menfeed->addWidget(mendisp);
+	// cout << "layout fine" << endl;
 
 	User* firstUsr_ = (users_.begin()->second);
+	// cout << "5" << endl;
 	vector<Tweet*> tempTweet_ = firstUsr_->getMenFeed();
-	stringstream ss2;
-	for(unsigned int i=0; i<tempTweet_.size(); ++i){
-		ss2 << (*tempTweet[i]);
-		mendisp->addItem(QString::fromStdString(ss2.str()));
+	// cout << "6" << endl;
+
+
+	//cout << "That fucking bastard" << endl;
+	//cout << firstUsr_ -> name() << endl;
+	for (unsigned int i=0; i< tempTweet_.size(); ++i){
+		cout <<(* tempTweet_[i])  << "first" <<  endl;
 	}
+	stringstream ss2;
+
+	// cout << tempTweet_.size() << endl;
+	// int countProblem = 0;
+	for(unsigned int i=0; i<tempTweet_.size(); ++i){
+		// cout << countProblem++ << endl;
+
+		//cout << (*tempTweet_[i]) <<"YOOO" << endl;
+
+		ss2 << (*tempTweet_[i]);
+		//cout << "?" << endl;
+		mendisp->addItem(QString::fromStdString(ss2.str()));
+		//cout << "??" << endl;
+	}
+	//cout << "7" << endl;
 	QObject::connect(usrdropdwn, SIGNAL(currentIndexChanged(QString)), this, SLOT(refreshmen(QString)));
+	//cout << "888" << endl;
+
+
+
 
 	feeds->addLayout(mainfeed);
 	feeds->addLayout(menfeed);
 	window->addLayout(feeds);
+
+
+	// cout << "after feeds " << endl;
+
 
 
 	//popup button
@@ -234,11 +300,13 @@ void TwitWindow::refreshmain(QString qtemp)
 
 	User* firstUser_ = (users_.find(temp)->second);
 	vector<Tweet*> tempTweet = firstUser_->getFeed();
-	stringstream ss;
+	stringstream* ss;
 	//vector<Tweet*>::iterator myit2;
 	for(unsigned int i=0; i<tempTweet.size(); ++i){
-		ss << (*tempTweet[i]) << endl;
-		maindisp->addItem(QString::fromStdString(ss.str()));
+		ss = new stringstream();
+		(*ss) << (*tempTweet[i]) << endl;
+		maindisp->addItem(QString::fromStdString(ss->str()));
+		delete ss;
 	}
 }
 
@@ -250,11 +318,13 @@ void TwitWindow::refreshmen(QString qtemp)
 
 	User* firstUser_ = (users_.find(temp)->second);
 	vector<Tweet*> tempTweet = firstUser_->getMenFeed();
-	stringstream ss2;
+	stringstream* ss2;
 	//vector<Tweet*>::iterator myit2;
 	for(unsigned int i=0; i<tempTweet.size(); ++i){
-		ss2 << (*tempTweet[i]) << endl;
-		mendisp->addItem(QString::fromStdString(ss2.str()));
+		ss2 = new stringstream();
+		//(*ss) << (*tempTweet[i]) << endl;
+		(*ss2) << (*tempTweet[i]) << endl;
+		mendisp->addItem(QString::fromStdString(ss2->str()));
 	}
 }
 
@@ -284,11 +354,13 @@ void TwitWindow::search()
 	
 
 	if(!result.empty()){
-		stringstream sstxt_;
+		stringstream *sstxt_;
 	  	for(unsigned int i =0; i< result.size(); i++){
+	    	sstxt_ = new stringstream();
+			(*sstxt_) << (*result[i]) << endl;
 	    	//cout << *result[i] << endl;
-	    	sstxt_ << (*result[i]) << endl;
-	    	termdisp->addItem(QString::fromStdString(sstxt_.str()));
+	    	//sstxt_ << (*result[i]) << endl;
+	    	termdisp->addItem(QString::fromStdString(sstxt_->str()));
 	  	}
 	}
 	else{
@@ -354,7 +426,10 @@ void TwitWindow::followuser()
 	string currusr = usrdropdwn->currentText().toStdString();
 	map<string, User*>::iterator mapit = users_.find(currusr);
 	(mapit->second)->addFollowing(tempusr);
+	tempusr->addFollower(mapit->second);
 	refreshfollowing(QString::fromStdString(currusr));
+	refreshmen(QString::fromStdString(currusr));
+	refreshmain(QString::fromStdString(currusr));
 	
 
 }

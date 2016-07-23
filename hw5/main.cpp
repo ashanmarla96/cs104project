@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   }
 
 
-
+  // cout << "here" << endl;
 
 	QApplication app(argc, argv);
 

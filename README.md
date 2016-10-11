@@ -1,5 +1,3 @@
-# CS 104 Student Repository
+# CS 104 Student Project
 
-- **Name**: Ashan Marla
-- **USC ID**: 1234567890
-- **Email**: amarla@usc.edu
+working twitter bot with GUI and sorting process. Run with qmake. Able to add tweets to data file as well as search hashtags
